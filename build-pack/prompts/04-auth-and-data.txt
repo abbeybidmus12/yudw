@@ -1,0 +1,9 @@
+Implement Stage 04: real identity, workspace access, and persistent application data.
+
+Use Supabase Auth/PostgreSQL/private storage with Drizzle for server-side application data unless the kickoff documented an existing equivalent. Read current official SSR guidance and the installed framework version before choosing middleware/proxy and cookie APIs. Verify identity on the server; do not authorize from an unverified session cookie.
+
+Create reviewed migrations for the core records in ARCHITECTURE.txt. Add foreign keys, tenant ownership, uniqueness for event cursors/idempotency keys, useful indexes, timestamps, and constraints. Implement sign-in/out and session expiry. Provision a personal workspace idempotently. Add owner/editor/viewer authorization helpers and owner-managed invitation acceptance with expiry, intended identity checks, and safe revocation.
+
+Move projects, conversations, messages, and comments to server storage in live mode. Keep fixture mode isolated. Validate every read/write by workspace membership and role. Document database access paths: privileged Drizzle connections may bypass RLS, so enforce service authorization and restrict browser Data API access. Add tested RLS/storage policies wherever browser access is allowed. Keep artifacts private.
+
+Completion gate: sessions survive refresh; expiry is handled; two separate workspaces cannot access each other's project, run, event, comment, or artifact by changing IDs. Viewers cannot mutate; editors cannot approve production releases or manage integrations. Migration/setup works on a fresh development database. Missing live credentials produce a setup state. Run meaningful authorization and migration checks and record untested live conditions accurately.

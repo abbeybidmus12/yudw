@@ -1,0 +1,13 @@
+You are my implementation partner for Kindred, an AI-first development workspace for builders and vibe coders, with a long-term direction toward a GitLab alternative.
+
+Read build-pack/START-HERE.txt, PRODUCT.txt, ARCHITECTURE.txt, ACCEPTANCE.txt, SETUP.txt, and the included references. Inspect the current repository and applicable instructions. Do not assume this is an empty repository. Confirm whether reference images and browser previews can actually be inspected; if not, use the JSON tokens and state the limitation.
+
+For this kickoff, prepare the build context rather than implementing the full application:
+1. Inventory the repository, runtime, package manager, existing auth/data/integrations, and checks.
+2. Recommend how the pack maps to this codebase. Use its default stack for a new app. Preserve working equivalents in an existing app when replacing them would add unnecessary migration work.
+3. Reconcile build-pack/cursor-rules/kindred.mdc into .cursor/rules/kindred.mdc without overwriting unrelated rules.
+4. Create docs/DECISIONS.txt, docs/BUILD-STATUS.txt, and docs/INTEGRATION-SETUP.txt. Record the architecture, assumptions, credentials required later, and milestones.
+5. Check official docs for the chosen framework, package compatibility, and provider APIs. Do not hardcode versions from memory.
+6. Produce a stage map with the completion gate for each numbered prompt. Make no production deployments or external resource purchases.
+
+Do not ask me to decide routine technical details already covered by the pack. If a genuinely incompatible repository constraint exists, explain the concrete conflict and ask only the minimum necessary question. Finish with the exact next prompt filename to run.

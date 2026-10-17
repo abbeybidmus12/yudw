@@ -1,0 +1,9 @@
+Implement Stage 13: focused integration, recovery, and UX verification. Inspect current code and acceptance requirements; do not declare features complete because routes exist.
+
+Build/run meaningful tests covering the actual boundaries: server authorization, workspace isolation, OAuth state, webhook authentication/replay, outbox dispatch, run leases/fencing, event reconnect, cancellation, bounded execution, path escapes, check provenance, revision-bound approval, uncertain merge/deploy outcomes, usage reservations, and private artifact access. Test failures through injected provider errors and real database transitions, not only mocked UI messages.
+
+Create a disposable real Git repository fixture containing the supported starter and useful change/test cases. Provide a separately gated live smoke suite for explicitly configured development accounts, repositories, sandbox resources, and deployments. Fixtures must not accidentally target production. Keep deterministic CI runnable without paid live services; report the live suite separately.
+
+Use Playwright to traverse Home → create/import → prompt → activity → preview → diff → request changes → approval → release → receipt. Include refresh midway, browser disconnect, a failed run, access revocation, stale approval, and a deployment that fails after merge. Inspect responsive screenshots, keyboard operation, focus, reduced motion, readable error states, and contrast. Fix meaningful regressions; do not replace working design with a generic dashboard.
+
+Completion gate: required automated checks pass; every failing or unrun scenario has an accurate explanation; no live operation is represented as verified based only on a fixture. Update ACCEPTANCE evidence and BUILD-STATUS with exact checks, source revisions, and remaining blockers.

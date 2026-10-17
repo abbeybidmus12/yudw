@@ -1,0 +1,9 @@
+Implement Stage 03: adaptive workspace behavior and persistent local continuity.
+
+Use the Stage 02 components and the product contract. Before a preview exists, give conversation the main area. After a run produces a preview, offer conversation plus preview. Opening a changed file reveals a contextual inspector. Provide explicit controls to hide/show panels and focus one surface. Use accessible resizable panels on desktop; clamp widths and prevent unusable combinations. Below a suitable content-driven breakpoint, use tabs/drawers rather than three shrunken columns.
+
+Preserve unsent composer drafts, selected run/file, panel sizes, and focus mode per project/user. Keep deep-linkable selection in the URL where appropriate. Persist only harmless local preferences/drafts in local storage; credentials and durable run truth never belong there. SSR must not produce hydration errors or leak one user's preferences to another.
+
+Add keyboard-accessible panel controls, dialog focus management, reduced-motion behavior, preview loading/expired/error states, and a clear return from file inspection to conversation. Distinguish stopping text streaming from requesting cancellation of a run. Demo behavior must model that distinction.
+
+Completion gate: resizing, navigation, reload, back/forward, mobile tabs, and draft recovery work without losing context. Test approximately 390px, 768px, and 1440px viewports. Check keyboard access and no horizontal document overflow. Capture and inspect screenshots against the references. Fix layout issues and update BUILD-STATUS. Do not claim real integrations exist yet.

@@ -1,0 +1,7 @@
+Review and improve Kindred's visual fidelity and interaction quality without changing the agreed product scope.
+
+Inspect build-pack/references/*.png and PRODUCT.txt. Open the current app and capture comparable desktop and narrow-screen views. Compare actual screenshots, not just source code. Focus on the cream/terracotta palette, serif heading character, sidebar proportion, content hierarchy, whitespace, composer, preview/inspector balance, status clarity, and readable typography. Preserve responsiveness and sufficient contrast even where the fixed concept screen is incomplete.
+
+Inspect loading, empty, failed, disconnected, and stale states as well as the happy path. Exercise keyboard navigation, focus restoration, panel resizing, mobile tabs, draft preservation, back/forward navigation, and primary action placement. Look for dead controls, text overflow, flicker, layout shifts, inaccessible tiny text, and generic dashboard styling that loses the concept's identity.
+
+List the few most material problems, then fix them in the existing component system. Avoid an unrelated redesign or adding new dependencies for cosmetic effects. Re-capture and inspect the changed views, run affected checks, and report specific improvements and any remaining limitation. Update BUILD-STATUS with screenshot locations and results.

@@ -1,0 +1,9 @@
+Implement Stage 06: durable run lifecycle and reconnectable activity.
+
+Implement the run transitions in ARCHITECTURE.txt with versioned state, typed persisted events, monotonic event cursors, structured failures, and append-only execution history. Use Inngest or the kickoff-approved equivalent for background execution. The browser only starts a run and observes persisted progress; it never owns the execution lifetime.
+
+Make run creation plus job dispatch reliable using a transactional outbox with a worker/reconciler, or another proven and tested atomic-dispatch design. Give external operations stable idempotency keys. Add a database-backed project write lease with expiry/renewal and stale-worker fencing so multiple workers cannot edit one project concurrently. Persist cancellation intent and distinguish requested, cancelling, and cancelled. Workers acknowledge cancellation at bounded safe points; do not falsely promise instant cancellation of an external operation.
+
+Connect activity and workspace status to authenticated event streaming with a cursor and reconnect behavior. Use bounded polling fallback if the host limits long-lived requests. Recheck membership on reconnect. Cap logs and event payloads. Retries create linked attempts while preserving original history.
+
+Completion gate: duplicate dispatch starts one logical run; refresh/disconnect does not lose events; worker restart resumes/reconciles safely; two simultaneous write requests serialize; stale workers cannot commit changes; cancelled and failed runs remain inspectable. Use deterministic test operations at this stage and identify them as such. Test tenant access to event streams and update BUILD-STATUS.

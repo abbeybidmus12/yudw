@@ -1,0 +1,11 @@
+Implement Stage 10: revision-bound owner approval and safe merge.
+
+Use GitLab's current merge-request, merge-condition, and check APIs. Create/update the run's merge request without duplicate writes. Keep the user-facing review experience inside Kindred while retaining links to provider evidence. Only workspace owners may approve and merge under the v1 policy; editors can comment/request changes.
+
+Persist approval against immutable changeset/head SHA, target branch/base, required check evidence, policy version, and approver. Immediately before merge, fetch provider truth and verify access, approved revision, current target, required checks, unresolved blocking review state, and mergeability. Use provider conditional SHA constraints and transactional local state transitions. A changed head, changed effective target, conflicting merge, missing evidence, or expired connection must block with a clear explanation.
+
+Handle merge-result differences explicitly. Prefer a documented fast-forward policy for the supported starter if the provider allows it. If merge/rebase/squash yields a different effective code tree, check the actual candidate and require refreshed approval before deployment. Do not assume a successful source-branch test proves the merged result passed.
+
+Implement an idempotent release coordinator. Network timeout after merge is 'outcome unknown' until reconciliation queries the provider. Never blindly retry a merge or report it as failed without checking what happened.
+
+Completion gate: owner can approve a verified test revision; editor/viewer cannot; a push after approval blocks merge; failed/missing/stale checks block; simultaneous approval/merge requests cannot duplicate releases; uncertain merge outcomes reconcile. No production mutation is required to test implementation. Update the audit trail and BUILD-STATUS.

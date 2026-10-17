@@ -1,0 +1,11 @@
+Implement Stage 11: deploy the approved merged result and verify it.
+
+Read current Vercel project/deployment APIs and Git integration behavior. Implement the agreed DeploymentProvider with connection/project association, trigger or discover the intended deployment, status reconciliation, safe deployment URL display, health checks, logs, and supported rollback. Connect an existing development Vercel project first. Document one deployment ownership strategy; do not let both Git integration and a direct API action create duplicate production releases.
+
+Bind every deployment to the exact approved merged source revision and immutable artifact identity where available. If provider behavior cannot guarantee that source, block shipping and explain the limitation. Server code holds deployment credentials; agent sandboxes cannot promote to production. Authenticate and deduplicate provider callbacks/webhooks. Bound polling and retry with reconciliation after uncertain outcomes.
+
+Build actual Review & ship states: approval pending, merging, merged, deploying, verifying, successful, failed, and outcome unknown. A provider 'ready' result plus configured meaningful health verification is required for success. Failed health remains visibly unhealthy. Display the live URL, revision, timestamps, check evidence, and deployment IDs in the receipt. Deployment failure after merge must be recoverable without a second merge.
+
+Implement owner-only confirmed rollback to a known previous compatible deployment. Explain that deployment rollback does not undo database changes. Exclude automated production schema migrations from v1 shipping; surface a manual requirement if a change needs them.
+
+Completion gate: a development release deploys the intended source, passes health verification, and can recover from timeout, failed build, and failed health. Test unauthorized deploy/rollback and repeated actions. If live credentials are absent, mark this gate unverified and keep live shipping disabled.

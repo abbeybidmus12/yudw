@@ -1,0 +1,11 @@
+Implement Stage 14: prepare a concrete pilot handoff without deploying production automatically.
+
+Review PRODUCT.txt, ARCHITECTURE.txt, ACCEPTANCE.txt, setup records, implementation, and all verification evidence. Fix remaining in-scope defects. Identify unsupported capabilities honestly; remove misleading affordances and simulated live results. Keep demo mode available only where intentionally configured and unmistakably labeled.
+
+Produce a fresh-machine setup guide, .env.example with placeholders, migration procedure, development-provider configuration guide, supported-starter specification, worker/webhook deployment instructions, rollback/reconciliation runbook, and backup/restore plan. Document which keys are public identifiers, which are server secrets, how stored credentials are encrypted/rotated, and who owns each external account. Verify production configuration cannot silently enable fixture adapters.
+
+Prepare application and worker deployment configuration, build output, and a human-readable pilot release checklist. Verify cookie/redirect configuration, HTTPS endpoints, origin restrictions, provider callbacks, health checks, job signing, database migrations, and server resource limits for the intended host. Check current provider pricing/limits; give a scenario-based estimate with explicit assumptions if requested, not invented monthly numbers.
+
+Run the full relevant local/CI checks and an explicitly configured development smoke journey. Provide a go/no-go table distinguishing implemented, verified, unverified, and blocked. State what requires user account setup or a production decision. Do not call the application production-ready unless live acceptance evidence supports it. Do not publish, purchase resources, merge production changes, or run production migrations as part of this handoff.
+
+Finish with the actual build outcome, evidence, pilot prerequisites, and the smallest next action. Update BUILD-STATUS so a new Cursor chat can continue without this chat history.

@@ -1,0 +1,9 @@
+Implement Stage 07: isolated project execution and real previews, initially through a manual preparation task.
+
+Verify current Vercel Sandbox lifecycle, execution, preview exposure, egress, time limits, and filesystem APIs. Implement the SandboxProvider adapter with create/resume-if-supported, workspace preparation, bounded command execution, artifact capture, preview readiness, stop, and cleanup. A provider limitation must be explicit, not invented away.
+
+For an authorized development project, check out a specific commit into an isolated project directory. Use short-lived, narrowly scoped Git credentials and redact them. Run dependency installation, checks, builds, and dev servers inside the sandbox only. Confine paths, reject traversal and symlink escapes, restrict network/metadata access using provider-supported controls, and bound duration/output/storage. Do not inject Kindred production database, model, or deployment credentials into repository code. Separate necessary preview-app environment variables from platform secrets.
+
+Support the one documented starter first. Detect readiness from an actual reachable process and health response. Preview booting, failed, expired, and stopped states must be real. Serve untrusted previews on a separate origin, restrict iframe capabilities and messaging, validate any postMessage origin/schema, and never share Kindred session cookies. Provide open-in-new-tab fallback when embedding cannot work.
+
+Completion gate: a real configured test repository runs in isolation and yields a verified preview; a failed build shows actual bounded logs; timeout and cancellation clean up; expired preview offers rebuild; no project script runs on the app host. Test path escapes and secret redaction. Document remaining isolation limitations before live use.

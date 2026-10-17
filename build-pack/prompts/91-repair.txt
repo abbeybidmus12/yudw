@@ -1,0 +1,7 @@
+Diagnose and repair the current Kindred failure before adding features.
+
+Read applicable instructions, BUILD-STATUS, and the current stage's completion gate. Inspect the reported error, relevant logs with secrets redacted, recent changes, and provider/API contracts. If I have supplied an error, use it as the starting evidence. Reproduce with the smallest meaningful case; do not rewrite unrelated architecture or hide the failure behind a successful fixture.
+
+Identify the root cause and affected behavior. Implement the smallest correct fix, including data/state recovery if necessary. Add or update a regression test only where it verifies meaningful behavior. For external writes with unknown outcomes, reconcile provider state before retrying. Preserve user data, audit history, approval integrity, and authorization boundaries.
+
+Run relevant checks and distinguish reproduced, fixed, and still unverified behavior. Update BUILD-STATUS and any decision/setup notes that became inaccurate. If a provider capability or missing configuration blocks a real fix, explain the exact blocker and keep dependent actions safely unavailable. Do not claim resolution from a compilation pass alone.

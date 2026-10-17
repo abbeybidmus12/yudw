@@ -1,0 +1,11 @@
+Implement Stage 01: application foundation.
+
+Read PRODUCT.txt, ARCHITECTURE.txt, current docs/BUILD-STATUS.txt, and repository instructions. Inspect existing files before changing them. For a new app, scaffold the agreed stable Next.js/TypeScript stack with its package manager lockfile. Use current framework conventions, not a copied outdated starter.
+
+Build the app shell, feature/module boundaries, typed configuration validation, semantic global styles, font loading, tokens, error boundary, not-found page, and accessible loading states. Add server-only boundaries for credentials and provider code. Set up formatting, lint, type checking, a focused unit test runner, and Playwright for essential journeys. Keep optional service configuration separate so the clearly labeled local demo starts without live secrets.
+
+Define shared types and validation for projects, conversations, runs, events, changesets, checks, approvals, and releases. Introduce narrow provider interfaces with unsupported capabilities represented explicitly. Avoid implementing a generic provider marketplace.
+
+Create .env.example with descriptions and placeholders only, a safe .gitignore, local setup instructions, and scripts for the available checks. Record exact dependencies chosen and why. Do not generate live API credentials or publish anything.
+
+Completion gate: fresh install works; the shell renders; lint/typecheck/build pass or specific environmental blockers are documented; malformed configuration fails helpfully; no secrets are bundled into the browser. Update BUILD-STATUS with evidence and the next stage. Implement this stage now.

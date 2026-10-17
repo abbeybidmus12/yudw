@@ -1,0 +1,9 @@
+Implement Stage 09: real changes inspection and review evidence.
+
+Replace live-mode fixture diffs with actual Git differences between the run's base and head revisions. Use a maintained diff renderer or parser; preserve added/deleted/renamed files, line numbers, Unicode, CRLF, no-newline markers, and escaped text. Provide unified/split modes, changed-file search, file selection, sensible pagination/virtualization, and binary/large-file notices. Do not send entire repositories to the browser or render source as executable HTML.
+
+Support repository tree plus changed-file view, read-only file inspection, source revision labels, and links to the matching run. Fetch actual check outcomes tied to the relevant SHA. Label generated change explanations as AI commentary and keep evidence visible independently. Reviewer comments must bind to changeset/revision and optional old/new line positions; show outdated comments rather than silently attaching them to changed code.
+
+Implement request changes: collect feedback, return to the right conversation, and create a linked new run when submitted. Preserve previous artifacts and reviews. Do not silently edit a reviewed run. Reconcile provider changes made outside Kindred and mark stale diffs/checks.
+
+Completion gate: multiple files can be selected; refresh/deep links preserve selection; edge-case diffs render safely; comments persist and become outdated correctly; a new revision visibly invalidates previous readiness. Tenant authorization covers diff and file endpoints. Use real Git fixtures for parser tests and a configured provider smoke check where available. Visually review the result against references/changes.png.

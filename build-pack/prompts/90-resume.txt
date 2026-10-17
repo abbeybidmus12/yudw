@@ -1,0 +1,7 @@
+Resume the Kindred build in this repository.
+
+Read applicable instructions, .cursor/rules/kindred.mdc, build-pack/PRODUCT.txt, build-pack/ARCHITECTURE.txt, build-pack/ACCEPTANCE.txt, docs/DECISIONS.txt, docs/BUILD-STATUS.txt, and docs/INTEGRATION-SETUP.txt. Inspect current changes and relevant code. Do not assume the previous chat's claims were verified.
+
+Identify the first incomplete numbered stage and its completion gate. Briefly state the current state and next concrete task, then implement that stage using its prompt in build-pack/prompts/. Preserve completed work and existing decisions unless evidence requires a correction. Ask only for genuinely missing consequential information; missing provider secrets must be configured outside chat.
+
+Run appropriate checks, fix failures within scope, and update BUILD-STATUS with actual evidence and remaining blockers. Do not silently substitute fixtures for a live integration or skip a failed prerequisite. Stop after the requested stage is reviewable; do not automatically deploy production.

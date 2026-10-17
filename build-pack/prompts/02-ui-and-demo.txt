@@ -1,0 +1,9 @@
+Implement Stage 02: all five screens as a coherent interactive demo.
+
+Read the product/design contract and visually inspect references/home.png, workspace.png, agents.png, changes.png, and ship.png. Use the JSON exports for measurements where useful. Preserve the cream surfaces, serif display typography, restrained terracotta action color, and calm density. Rebuild layout with responsive components; do not embed the screenshots or use the exported absolute-positioned HTML as the application.
+
+Build global home and project routes for Build, Activity, Files & changes, Review & ship, and Settings. Add reusable sidebar, project header, composer, status badge, empty state, timeline, changed-file list, diff surface, preview frame, checks list, and release receipt. Include sign-in and project-creation surfaces without pretending auth is wired yet.
+
+Implement deterministic fixture adapters behind explicit demo mode. A sample Launchpad project must support prompt submission, a simulated run, preview selection, file inspection, request changes, demo approval, and a clearly simulated receipt. Realistic failures and loading/empty states must be selectable in development. Every visible control acts, explains its availability, or is removed. The preview app's controls belong to the preview experience, not Kindred navigation.
+
+Completion gate: traverse the full demo with keyboard and mouse; directly open every route; refresh without losing selected project; inspect desktop and mobile screenshots; no dead primary actions or unlabeled fake live results. Demo status is persistently visible. Run the relevant checks, fix failures, and update BUILD-STATUS.

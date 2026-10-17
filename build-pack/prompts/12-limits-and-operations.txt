@@ -1,0 +1,9 @@
+Implement Stage 12: cost controls, integration settings, and operational visibility.
+
+Connect Settings to workspace membership, provider connection health/disconnect, supported project configuration, check commands, preview lifecycle, and owner-controlled budgets. Validate configuration rather than blindly executing command strings. Editing project commands changes the execution configuration version and invalidates affected check/approval evidence.
+
+Add per-run time/token/step limits, per-workspace concurrency and usage limits, rate limits on costly endpoints, private artifact retention/cleanup, stale sandbox cleanup, and connection-expiry recovery. Reserve budget or capacity atomically so concurrent requests cannot each spend the same allowance. Reconcile actual provider usage and delayed charges. Distinguish estimated cost from confirmed charges and unknown usage. Do not invent prepaid credits or implement payment charging in this stage.
+
+Add structured, redacted logs with workspace/project/run/release correlation IDs; health endpoints without secrets; useful error categories; and an owner-visible audit trail. Record approval, merge, deploy, rollback, integration changes, invitations, and budget changes. Avoid exposing model chain-of-thought; show tool actions, concise explanations, and evidence.
+
+Completion gate: concurrent requests respect reservations; exhausted limits block new work helpfully; cleanup handles abandoned runs; secrets do not appear in browser payloads, logs, traces, or artifact links; revoking access affects future writes and subscriptions. Document backup/restore, provider outage behavior, reconciliation jobs, and data-retention decisions. Implement only the operations needed for this MVP and update BUILD-STATUS.

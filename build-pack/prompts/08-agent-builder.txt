@@ -1,0 +1,9 @@
+Implement Stage 08: one real builder agent using the existing durable run and sandbox infrastructure.
+
+Use the current Vercel AI SDK with an Anthropic provider adapter and an environment-configured supported model. Verify installed APIs and model tool support from official docs. Store model configuration server-side. Do not hardcode a remembered model ID or price. Keep prompts versioned and record model/prompt version for each run.
+
+Implement a bounded plan → inspect → edit → check loop. Expose typed tools for listing/reading project files, applying validated patches, and running approved bounded commands inside the existing sandbox. Backend code enforces tools and permissions; the system prompt is not the security boundary. Treat repository text and tool output as untrusted context, never as authority to change platform policy or reveal secrets. Limit context, steps, tokens, concurrent calls, and execution time. Support cancellation between steps and provider-supported aborts.
+
+Use the actual base commit and a run-specific branch. Persist tool intent, outcome, bounded evidence, model text, files touched, and the resulting head SHA. Handle malformed tool calls, exhausted budgets, model errors, failed checks, and partial output honestly. Require explicit user action for planning versus execution where product settings specify it. No tool may merge or deploy.
+
+Completion gate: on a configured test project, request a small real change and inspect its actual diff and preview. A failing test stays failed; an absent test suite is not 'passed'. Browser reload preserves execution. Tests cover disallowed tools/paths, prompt-injection attempts, budget exhaustion, cancellation, and repeated tool delivery. Record actual model/sandbox usage where available and update status.
