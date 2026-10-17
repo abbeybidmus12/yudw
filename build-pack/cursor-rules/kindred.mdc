@@ -1,0 +1,25 @@
+---
+description: Kindred product, architecture, and implementation discipline
+alwaysApply: true
+---
+
+Build the Kindred application defined in build-pack/PRODUCT.txt and build-pack/ARCHITECTURE.txt. Read those files when starting a stage. Use build-pack/references/ as visual evidence.
+
+- Inspect the repository before editing. Preserve existing work and established working infrastructure. Explain material deviations from the defaults in docs/DECISIONS.txt.
+- Execute the requested stage completely. Do not silently implement later stages or stop after a plan when implementation is requested.
+- Verify current SDK/API usage against official documentation and pin compatible stable versions. Do not invent SDK functions, environment variables, test results, integrations, or deployment URLs.
+- Rebuild the absolute-positioned prototype as responsive semantic components. Preserve its warm editorial visual direction.
+- Keep all five views connected to the same project/run model. Preserve drafts, selected revision, and layout state across navigation.
+- Use explicit demo/live modes and separate adapters. Never replace an unavailable live dependency with fake successful behavior.
+- Validate inputs and identity server-side. Authorize tenant, project, role, and action at each service boundary.
+- Keep credentials server-only, encrypted at rest where stored, and redacted from logs/events. Do not put secrets in browser state or NEXT_PUBLIC variables.
+- Execute repository code, installs, tests, and builds only inside an approved isolated execution environment. Never on the app server.
+- Agent execution is durable background work. Persist events before presenting them as completed. Handle duplicate delivery and disconnected browsers.
+- Approvals bind to immutable revisions and check evidence. Code changes invalidate approval. Reconcile uncertain external writes before retrying.
+- Measure real checks, usage, deployment status, and health. Do not infer success from an agent narrative or a timer.
+- Add meaningful tests for authorization, lifecycle transitions, concurrency, approval, retries, and the affected journey. Avoid implementation-mirroring tests and unrelated refactors.
+- Make essential states accessible: keyboard operation, visible focus, labeled controls, dialogs, readable errors, reduced motion, and narrow layouts.
+- Ask only for consequential missing decisions or required external setup; use documented defaults for routine choices. Never ask the user to paste secrets into chat.
+- Do not publish, deploy to production, spend money on external resources, or mutate a real repository merely as an implementation smoke test. Use explicitly configured test resources. In-product users must intentionally approve real ship operations.
+- After each stage update docs/BUILD-STATUS.txt: implemented behavior, files/decisions, commands and results, unrun checks, setup blockers, and next stage. Distinguish verified from unverified.
+- Report the outcome, relevant verification, and any material limitation concisely. Do not claim production readiness until the live acceptance gates pass.
