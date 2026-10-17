@@ -1,0 +1,297 @@
+KINDRED — ALL CURSOR PROMPTS
+
+Use START-HERE.txt first. Run numbered stages one at a time.
+
+
+==============================================================================
+00-kickoff.txt
+==============================================================================
+
+You are my implementation partner for Kindred, an AI-first development workspace for builders and vibe coders, with a long-term direction toward a GitLab alternative.
+
+Read build-pack/START-HERE.txt, PRODUCT.txt, ARCHITECTURE.txt, ACCEPTANCE.txt, SETUP.txt, and the included references. Inspect the current repository and applicable instructions. Do not assume this is an empty repository. Confirm whether reference images and browser previews can actually be inspected; if not, use the JSON tokens and state the limitation.
+
+For this kickoff, prepare the build context rather than implementing the full application:
+1. Inventory the repository, runtime, package manager, existing auth/data/integrations, and checks.
+2. Recommend how the pack maps to this codebase. Use its default stack for a new app. Preserve working equivalents in an existing app when replacing them would add unnecessary migration work.
+3. Reconcile build-pack/cursor-rules/kindred.mdc into .cursor/rules/kindred.mdc without overwriting unrelated rules.
+4. Create docs/DECISIONS.txt, docs/BUILD-STATUS.txt, and docs/INTEGRATION-SETUP.txt. Record the architecture, assumptions, credentials required later, and milestones.
+5. Check official docs for the chosen framework, package compatibility, and provider APIs. Do not hardcode versions from memory.
+6. Produce a stage map with the completion gate for each numbered prompt. Make no production deployments or external resource purchases.
+
+Do not ask me to decide routine technical details already covered by the pack. If a genuinely incompatible repository constraint exists, explain the concrete conflict and ask only the minimum necessary question. Finish with the exact next prompt filename to run.
+
+
+
+==============================================================================
+01-foundation.txt
+==============================================================================
+
+Implement Stage 01: application foundation.
+
+Read PRODUCT.txt, ARCHITECTURE.txt, current docs/BUILD-STATUS.txt, and repository instructions. Inspect existing files before changing them. For a new app, scaffold the agreed stable Next.js/TypeScript stack with its package manager lockfile. Use current framework conventions, not a copied outdated starter.
+
+Build the app shell, feature/module boundaries, typed configuration validation, semantic global styles, font loading, tokens, error boundary, not-found page, and accessible loading states. Add server-only boundaries for credentials and provider code. Set up formatting, lint, type checking, a focused unit test runner, and Playwright for essential journeys. Keep optional service configuration separate so the clearly labeled local demo starts without live secrets.
+
+Define shared types and validation for projects, conversations, runs, events, changesets, checks, approvals, and releases. Introduce narrow provider interfaces with unsupported capabilities represented explicitly. Avoid implementing a generic provider marketplace.
+
+Create .env.example with descriptions and placeholders only, a safe .gitignore, local setup instructions, and scripts for the available checks. Record exact dependencies chosen and why. Do not generate live API credentials or publish anything.
+
+Completion gate: fresh install works; the shell renders; lint/typecheck/build pass or specific environmental blockers are documented; malformed configuration fails helpfully; no secrets are bundled into the browser. Update BUILD-STATUS with evidence and the next stage. Implement this stage now.
+
+
+
+==============================================================================
+02-ui-and-demo.txt
+==============================================================================
+
+Implement Stage 02: all five screens as a coherent interactive demo.
+
+Read the product/design contract and visually inspect references/home.png, workspace.png, agents.png, changes.png, and ship.png. Use the JSON exports for measurements where useful. Preserve the cream surfaces, serif display typography, restrained terracotta action color, and calm density. Rebuild layout with responsive components; do not embed the screenshots or use the exported absolute-positioned HTML as the application.
+
+Build global home and project routes for Build, Activity, Files & changes, Review & ship, and Settings. Add reusable sidebar, project header, composer, status badge, empty state, timeline, changed-file list, diff surface, preview frame, checks list, and release receipt. Include sign-in and project-creation surfaces without pretending auth is wired yet.
+
+Implement deterministic fixture adapters behind explicit demo mode. A sample Launchpad project must support prompt submission, a simulated run, preview selection, file inspection, request changes, demo approval, and a clearly simulated receipt. Realistic failures and loading/empty states must be selectable in development. Every visible control acts, explains its availability, or is removed. The preview app's controls belong to the preview experience, not Kindred navigation.
+
+Completion gate: traverse the full demo with keyboard and mouse; directly open every route; refresh without losing selected project; inspect desktop and mobile screenshots; no dead primary actions or unlabeled fake live results. Demo status is persistently visible. Run the relevant checks, fix failures, and update BUILD-STATUS.
+
+
+
+==============================================================================
+03-adaptive-workspace.txt
+==============================================================================
+
+Implement Stage 03: adaptive workspace behavior and persistent local continuity.
+
+Use the Stage 02 components and the product contract. Before a preview exists, give conversation the main area. After a run produces a preview, offer conversation plus preview. Opening a changed file reveals a contextual inspector. Provide explicit controls to hide/show panels and focus one surface. Use accessible resizable panels on desktop; clamp widths and prevent unusable combinations. Below a suitable content-driven breakpoint, use tabs/drawers rather than three shrunken columns.
+
+Preserve unsent composer drafts, selected run/file, panel sizes, and focus mode per project/user. Keep deep-linkable selection in the URL where appropriate. Persist only harmless local preferences/drafts in local storage; credentials and durable run truth never belong there. SSR must not produce hydration errors or leak one user's preferences to another.
+
+Add keyboard-accessible panel controls, dialog focus management, reduced-motion behavior, preview loading/expired/error states, and a clear return from file inspection to conversation. Distinguish stopping text streaming from requesting cancellation of a run. Demo behavior must model that distinction.
+
+Completion gate: resizing, navigation, reload, back/forward, mobile tabs, and draft recovery work without losing context. Test approximately 390px, 768px, and 1440px viewports. Check keyboard access and no horizontal document overflow. Capture and inspect screenshots against the references. Fix layout issues and update BUILD-STATUS. Do not claim real integrations exist yet.
+
+
+
+==============================================================================
+04-auth-and-data.txt
+==============================================================================
+
+Implement Stage 04: real identity, workspace access, and persistent application data.
+
+Use Supabase Auth/PostgreSQL/private storage with Drizzle for server-side application data unless the kickoff documented an existing equivalent. Read current official SSR guidance and the installed framework version before choosing middleware/proxy and cookie APIs. Verify identity on the server; do not authorize from an unverified session cookie.
+
+Create reviewed migrations for the core records in ARCHITECTURE.txt. Add foreign keys, tenant ownership, uniqueness for event cursors/idempotency keys, useful indexes, timestamps, and constraints. Implement sign-in/out and session expiry. Provision a personal workspace idempotently. Add owner/editor/viewer authorization helpers and owner-managed invitation acceptance with expiry, intended identity checks, and safe revocation.
+
+Move projects, conversations, messages, and comments to server storage in live mode. Keep fixture mode isolated. Validate every read/write by workspace membership and role. Document database access paths: privileged Drizzle connections may bypass RLS, so enforce service authorization and restrict browser Data API access. Add tested RLS/storage policies wherever browser access is allowed. Keep artifacts private.
+
+Completion gate: sessions survive refresh; expiry is handled; two separate workspaces cannot access each other's project, run, event, comment, or artifact by changing IDs. Viewers cannot mutate; editors cannot approve production releases or manage integrations. Migration/setup works on a fresh development database. Missing live credentials produce a setup state. Run meaningful authorization and migration checks and record untested live conditions accurately.
+
+
+
+==============================================================================
+05-gitlab-integration.txt
+==============================================================================
+
+Implement Stage 05: a real GitLab.com connection and project import.
+
+Read official GitLab OAuth, repository, files, branch, merge-request, webhook, and rate-limit docs before implementation. Implement a dedicated GitLab OAuth connection with state protection, server-side code exchange, verified account identity, appropriate scopes, token refresh/revocation behavior, and encrypted credential storage. Keep this separate from application sign-in. Do not ask for secrets in chat or expose tokens through browser payloads, clone URLs in logs, or query strings.
+
+Implement the GitProvider boundary for paginated repository discovery, authorized import, branch discovery, repository tree, file content, commit/diff lookup, and checks. Add permission/capability errors, rate-limit handling, bounded retries, and connection-expired states. Support GitLab.com only in v1. Recheck provider access when importing and using a project. Define supported-project detection without running repository code on the app server.
+
+Connect Home's Import flow to actual repositories. Add one documented supported starter creation flow in live mode, triggered explicitly by the owner. Register webhooks only when authorized; validate webhook authentication and deduplicate deliveries. Use polling/reconciliation where webhook setup is unavailable.
+
+Completion gate: connect a configured development account, import a test repository, browse actual files/branches, disconnect, and see actionable expired/revoked states. Test unauthorized project IDs, duplicate imports, OAuth state failure, and webhook replay. No real account available means adapter checks are explicitly unverified; fixtures do not satisfy this gate. Update setup and status records.
+
+
+
+==============================================================================
+06-durable-runs.txt
+==============================================================================
+
+Implement Stage 06: durable run lifecycle and reconnectable activity.
+
+Implement the run transitions in ARCHITECTURE.txt with versioned state, typed persisted events, monotonic event cursors, structured failures, and append-only execution history. Use Inngest or the kickoff-approved equivalent for background execution. The browser only starts a run and observes persisted progress; it never owns the execution lifetime.
+
+Make run creation plus job dispatch reliable using a transactional outbox with a worker/reconciler, or another proven and tested atomic-dispatch design. Give external operations stable idempotency keys. Add a database-backed project write lease with expiry/renewal and stale-worker fencing so multiple workers cannot edit one project concurrently. Persist cancellation intent and distinguish requested, cancelling, and cancelled. Workers acknowledge cancellation at bounded safe points; do not falsely promise instant cancellation of an external operation.
+
+Connect activity and workspace status to authenticated event streaming with a cursor and reconnect behavior. Use bounded polling fallback if the host limits long-lived requests. Recheck membership on reconnect. Cap logs and event payloads. Retries create linked attempts while preserving original history.
+
+Completion gate: duplicate dispatch starts one logical run; refresh/disconnect does not lose events; worker restart resumes/reconciles safely; two simultaneous write requests serialize; stale workers cannot commit changes; cancelled and failed runs remain inspectable. Use deterministic test operations at this stage and identify them as such. Test tenant access to event streams and update BUILD-STATUS.
+
+
+
+==============================================================================
+07-sandbox-and-preview.txt
+==============================================================================
+
+Implement Stage 07: isolated project execution and real previews, initially through a manual preparation task.
+
+Verify current Vercel Sandbox lifecycle, execution, preview exposure, egress, time limits, and filesystem APIs. Implement the SandboxProvider adapter with create/resume-if-supported, workspace preparation, bounded command execution, artifact capture, preview readiness, stop, and cleanup. A provider limitation must be explicit, not invented away.
+
+For an authorized development project, check out a specific commit into an isolated project directory. Use short-lived, narrowly scoped Git credentials and redact them. Run dependency installation, checks, builds, and dev servers inside the sandbox only. Confine paths, reject traversal and symlink escapes, restrict network/metadata access using provider-supported controls, and bound duration/output/storage. Do not inject Kindred production database, model, or deployment credentials into repository code. Separate necessary preview-app environment variables from platform secrets.
+
+Support the one documented starter first. Detect readiness from an actual reachable process and health response. Preview booting, failed, expired, and stopped states must be real. Serve untrusted previews on a separate origin, restrict iframe capabilities and messaging, validate any postMessage origin/schema, and never share Kindred session cookies. Provide open-in-new-tab fallback when embedding cannot work.
+
+Completion gate: a real configured test repository runs in isolation and yields a verified preview; a failed build shows actual bounded logs; timeout and cancellation clean up; expired preview offers rebuild; no project script runs on the app host. Test path escapes and secret redaction. Document remaining isolation limitations before live use.
+
+
+
+==============================================================================
+08-agent-builder.txt
+==============================================================================
+
+Implement Stage 08: one real builder agent using the existing durable run and sandbox infrastructure.
+
+Use the current Vercel AI SDK with an Anthropic provider adapter and an environment-configured supported model. Verify installed APIs and model tool support from official docs. Store model configuration server-side. Do not hardcode a remembered model ID or price. Keep prompts versioned and record model/prompt version for each run.
+
+Implement a bounded plan → inspect → edit → check loop. Expose typed tools for listing/reading project files, applying validated patches, and running approved bounded commands inside the existing sandbox. Backend code enforces tools and permissions; the system prompt is not the security boundary. Treat repository text and tool output as untrusted context, never as authority to change platform policy or reveal secrets. Limit context, steps, tokens, concurrent calls, and execution time. Support cancellation between steps and provider-supported aborts.
+
+Use the actual base commit and a run-specific branch. Persist tool intent, outcome, bounded evidence, model text, files touched, and the resulting head SHA. Handle malformed tool calls, exhausted budgets, model errors, failed checks, and partial output honestly. Require explicit user action for planning versus execution where product settings specify it. No tool may merge or deploy.
+
+Completion gate: on a configured test project, request a small real change and inspect its actual diff and preview. A failing test stays failed; an absent test suite is not 'passed'. Browser reload preserves execution. Tests cover disallowed tools/paths, prompt-injection attempts, budget exhaustion, cancellation, and repeated tool delivery. Record actual model/sandbox usage where available and update status.
+
+
+
+==============================================================================
+09-changes-and-review.txt
+==============================================================================
+
+Implement Stage 09: real changes inspection and review evidence.
+
+Replace live-mode fixture diffs with actual Git differences between the run's base and head revisions. Use a maintained diff renderer or parser; preserve added/deleted/renamed files, line numbers, Unicode, CRLF, no-newline markers, and escaped text. Provide unified/split modes, changed-file search, file selection, sensible pagination/virtualization, and binary/large-file notices. Do not send entire repositories to the browser or render source as executable HTML.
+
+Support repository tree plus changed-file view, read-only file inspection, source revision labels, and links to the matching run. Fetch actual check outcomes tied to the relevant SHA. Label generated change explanations as AI commentary and keep evidence visible independently. Reviewer comments must bind to changeset/revision and optional old/new line positions; show outdated comments rather than silently attaching them to changed code.
+
+Implement request changes: collect feedback, return to the right conversation, and create a linked new run when submitted. Preserve previous artifacts and reviews. Do not silently edit a reviewed run. Reconcile provider changes made outside Kindred and mark stale diffs/checks.
+
+Completion gate: multiple files can be selected; refresh/deep links preserve selection; edge-case diffs render safely; comments persist and become outdated correctly; a new revision visibly invalidates previous readiness. Tenant authorization covers diff and file endpoints. Use real Git fixtures for parser tests and a configured provider smoke check where available. Visually review the result against references/changes.png.
+
+
+
+==============================================================================
+10-approval-and-merge.txt
+==============================================================================
+
+Implement Stage 10: revision-bound owner approval and safe merge.
+
+Use GitLab's current merge-request, merge-condition, and check APIs. Create/update the run's merge request without duplicate writes. Keep the user-facing review experience inside Kindred while retaining links to provider evidence. Only workspace owners may approve and merge under the v1 policy; editors can comment/request changes.
+
+Persist approval against immutable changeset/head SHA, target branch/base, required check evidence, policy version, and approver. Immediately before merge, fetch provider truth and verify access, approved revision, current target, required checks, unresolved blocking review state, and mergeability. Use provider conditional SHA constraints and transactional local state transitions. A changed head, changed effective target, conflicting merge, missing evidence, or expired connection must block with a clear explanation.
+
+Handle merge-result differences explicitly. Prefer a documented fast-forward policy for the supported starter if the provider allows it. If merge/rebase/squash yields a different effective code tree, check the actual candidate and require refreshed approval before deployment. Do not assume a successful source-branch test proves the merged result passed.
+
+Implement an idempotent release coordinator. Network timeout after merge is 'outcome unknown' until reconciliation queries the provider. Never blindly retry a merge or report it as failed without checking what happened.
+
+Completion gate: owner can approve a verified test revision; editor/viewer cannot; a push after approval blocks merge; failed/missing/stale checks block; simultaneous approval/merge requests cannot duplicate releases; uncertain merge outcomes reconcile. No production mutation is required to test implementation. Update the audit trail and BUILD-STATUS.
+
+
+
+==============================================================================
+11-deploy-and-rollback.txt
+==============================================================================
+
+Implement Stage 11: deploy the approved merged result and verify it.
+
+Read current Vercel project/deployment APIs and Git integration behavior. Implement the agreed DeploymentProvider with connection/project association, trigger or discover the intended deployment, status reconciliation, safe deployment URL display, health checks, logs, and supported rollback. Connect an existing development Vercel project first. Document one deployment ownership strategy; do not let both Git integration and a direct API action create duplicate production releases.
+
+Bind every deployment to the exact approved merged source revision and immutable artifact identity where available. If provider behavior cannot guarantee that source, block shipping and explain the limitation. Server code holds deployment credentials; agent sandboxes cannot promote to production. Authenticate and deduplicate provider callbacks/webhooks. Bound polling and retry with reconciliation after uncertain outcomes.
+
+Build actual Review & ship states: approval pending, merging, merged, deploying, verifying, successful, failed, and outcome unknown. A provider 'ready' result plus configured meaningful health verification is required for success. Failed health remains visibly unhealthy. Display the live URL, revision, timestamps, check evidence, and deployment IDs in the receipt. Deployment failure after merge must be recoverable without a second merge.
+
+Implement owner-only confirmed rollback to a known previous compatible deployment. Explain that deployment rollback does not undo database changes. Exclude automated production schema migrations from v1 shipping; surface a manual requirement if a change needs them.
+
+Completion gate: a development release deploys the intended source, passes health verification, and can recover from timeout, failed build, and failed health. Test unauthorized deploy/rollback and repeated actions. If live credentials are absent, mark this gate unverified and keep live shipping disabled.
+
+
+
+==============================================================================
+12-limits-and-operations.txt
+==============================================================================
+
+Implement Stage 12: cost controls, integration settings, and operational visibility.
+
+Connect Settings to workspace membership, provider connection health/disconnect, supported project configuration, check commands, preview lifecycle, and owner-controlled budgets. Validate configuration rather than blindly executing command strings. Editing project commands changes the execution configuration version and invalidates affected check/approval evidence.
+
+Add per-run time/token/step limits, per-workspace concurrency and usage limits, rate limits on costly endpoints, private artifact retention/cleanup, stale sandbox cleanup, and connection-expiry recovery. Reserve budget or capacity atomically so concurrent requests cannot each spend the same allowance. Reconcile actual provider usage and delayed charges. Distinguish estimated cost from confirmed charges and unknown usage. Do not invent prepaid credits or implement payment charging in this stage.
+
+Add structured, redacted logs with workspace/project/run/release correlation IDs; health endpoints without secrets; useful error categories; and an owner-visible audit trail. Record approval, merge, deploy, rollback, integration changes, invitations, and budget changes. Avoid exposing model chain-of-thought; show tool actions, concise explanations, and evidence.
+
+Completion gate: concurrent requests respect reservations; exhausted limits block new work helpfully; cleanup handles abandoned runs; secrets do not appear in browser payloads, logs, traces, or artifact links; revoking access affects future writes and subscriptions. Document backup/restore, provider outage behavior, reconciliation jobs, and data-retention decisions. Implement only the operations needed for this MVP and update BUILD-STATUS.
+
+
+
+==============================================================================
+13-integration-and-recovery-qa.txt
+==============================================================================
+
+Implement Stage 13: focused integration, recovery, and UX verification. Inspect current code and acceptance requirements; do not declare features complete because routes exist.
+
+Build/run meaningful tests covering the actual boundaries: server authorization, workspace isolation, OAuth state, webhook authentication/replay, outbox dispatch, run leases/fencing, event reconnect, cancellation, bounded execution, path escapes, check provenance, revision-bound approval, uncertain merge/deploy outcomes, usage reservations, and private artifact access. Test failures through injected provider errors and real database transitions, not only mocked UI messages.
+
+Create a disposable real Git repository fixture containing the supported starter and useful change/test cases. Provide a separately gated live smoke suite for explicitly configured development accounts, repositories, sandbox resources, and deployments. Fixtures must not accidentally target production. Keep deterministic CI runnable without paid live services; report the live suite separately.
+
+Use Playwright to traverse Home → create/import → prompt → activity → preview → diff → request changes → approval → release → receipt. Include refresh midway, browser disconnect, a failed run, access revocation, stale approval, and a deployment that fails after merge. Inspect responsive screenshots, keyboard operation, focus, reduced motion, readable error states, and contrast. Fix meaningful regressions; do not replace working design with a generic dashboard.
+
+Completion gate: required automated checks pass; every failing or unrun scenario has an accurate explanation; no live operation is represented as verified based only on a fixture. Update ACCEPTANCE evidence and BUILD-STATUS with exact checks, source revisions, and remaining blockers.
+
+
+
+==============================================================================
+14-pilot-handoff.txt
+==============================================================================
+
+Implement Stage 14: prepare a concrete pilot handoff without deploying production automatically.
+
+Review PRODUCT.txt, ARCHITECTURE.txt, ACCEPTANCE.txt, setup records, implementation, and all verification evidence. Fix remaining in-scope defects. Identify unsupported capabilities honestly; remove misleading affordances and simulated live results. Keep demo mode available only where intentionally configured and unmistakably labeled.
+
+Produce a fresh-machine setup guide, .env.example with placeholders, migration procedure, development-provider configuration guide, supported-starter specification, worker/webhook deployment instructions, rollback/reconciliation runbook, and backup/restore plan. Document which keys are public identifiers, which are server secrets, how stored credentials are encrypted/rotated, and who owns each external account. Verify production configuration cannot silently enable fixture adapters.
+
+Prepare application and worker deployment configuration, build output, and a human-readable pilot release checklist. Verify cookie/redirect configuration, HTTPS endpoints, origin restrictions, provider callbacks, health checks, job signing, database migrations, and server resource limits for the intended host. Check current provider pricing/limits; give a scenario-based estimate with explicit assumptions if requested, not invented monthly numbers.
+
+Run the full relevant local/CI checks and an explicitly configured development smoke journey. Provide a go/no-go table distinguishing implemented, verified, unverified, and blocked. State what requires user account setup or a production decision. Do not call the application production-ready unless live acceptance evidence supports it. Do not publish, purchase resources, merge production changes, or run production migrations as part of this handoff.
+
+Finish with the actual build outcome, evidence, pilot prerequisites, and the smallest next action. Update BUILD-STATUS so a new Cursor chat can continue without this chat history.
+
+
+
+==============================================================================
+90-resume.txt
+==============================================================================
+
+Resume the Kindred build in this repository.
+
+Read applicable instructions, .cursor/rules/kindred.mdc, build-pack/PRODUCT.txt, build-pack/ARCHITECTURE.txt, build-pack/ACCEPTANCE.txt, docs/DECISIONS.txt, docs/BUILD-STATUS.txt, and docs/INTEGRATION-SETUP.txt. Inspect current changes and relevant code. Do not assume the previous chat's claims were verified.
+
+Identify the first incomplete numbered stage and its completion gate. Briefly state the current state and next concrete task, then implement that stage using its prompt in build-pack/prompts/. Preserve completed work and existing decisions unless evidence requires a correction. Ask only for genuinely missing consequential information; missing provider secrets must be configured outside chat.
+
+Run appropriate checks, fix failures within scope, and update BUILD-STATUS with actual evidence and remaining blockers. Do not silently substitute fixtures for a live integration or skip a failed prerequisite. Stop after the requested stage is reviewable; do not automatically deploy production.
+
+
+
+==============================================================================
+91-repair.txt
+==============================================================================
+
+Diagnose and repair the current Kindred failure before adding features.
+
+Read applicable instructions, BUILD-STATUS, and the current stage's completion gate. Inspect the reported error, relevant logs with secrets redacted, recent changes, and provider/API contracts. If I have supplied an error, use it as the starting evidence. Reproduce with the smallest meaningful case; do not rewrite unrelated architecture or hide the failure behind a successful fixture.
+
+Identify the root cause and affected behavior. Implement the smallest correct fix, including data/state recovery if necessary. Add or update a regression test only where it verifies meaningful behavior. For external writes with unknown outcomes, reconcile provider state before retrying. Preserve user data, audit history, approval integrity, and authorization boundaries.
+
+Run relevant checks and distinguish reproduced, fixed, and still unverified behavior. Update BUILD-STATUS and any decision/setup notes that became inaccurate. If a provider capability or missing configuration blocks a real fix, explain the exact blocker and keep dependent actions safely unavailable. Do not claim resolution from a compilation pass alone.
+
+
+
+==============================================================================
+92-visual-review.txt
+==============================================================================
+
+Review and improve Kindred's visual fidelity and interaction quality without changing the agreed product scope.
+
+Inspect build-pack/references/*.png and PRODUCT.txt. Open the current app and capture comparable desktop and narrow-screen views. Compare actual screenshots, not just source code. Focus on the cream/terracotta palette, serif heading character, sidebar proportion, content hierarchy, whitespace, composer, preview/inspector balance, status clarity, and readable typography. Preserve responsiveness and sufficient contrast even where the fixed concept screen is incomplete.
+
+Inspect loading, empty, failed, disconnected, and stale states as well as the happy path. Exercise keyboard navigation, focus restoration, panel resizing, mobile tabs, draft preservation, back/forward navigation, and primary action placement. Look for dead controls, text overflow, flicker, layout shifts, inaccessible tiny text, and generic dashboard styling that loses the concept's identity.
+
+List the few most material problems, then fix them in the existing component system. Avoid an unrelated redesign or adding new dependencies for cosmetic effects. Re-capture and inspect the changed views, run affected checks, and report specific improvements and any remaining limitation. Update BUILD-STATUS with screenshot locations and results.
+

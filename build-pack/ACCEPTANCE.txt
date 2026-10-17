@@ -1,0 +1,44 @@
+KINDRED — RELEASE ACCEPTANCE
+
+CLASSIFICATION
+Implemented: code exists and is connected.
+Verified: relevant behavior was exercised with recorded evidence.
+Unverified: implementation exists but the required environment/check was not run.
+Blocked: a concrete dependency prevents completion.
+A fixture test verifies fixture behavior only. A build passing does not prove integration behavior.
+
+GATE A — LOCAL DEMO
+All five screens use the shared project/run model. Navigation, composer, activity, diff selection, review, and demo receipt work. Demo is labeled. Desktop and mobile are usable. No dead primary controls. Drafts survive navigation. Keyboard access and errors are usable.
+
+GATE B — IDENTITY AND ISOLATION
+Verified login/session expiry. Tenant isolation across route handlers, actions, jobs, streams, artifacts, previews, and provider calls. Viewer/editor restrictions enforced server-side. Owner actions are audited. Invitation acceptance cannot switch the intended account. No browser-bundled admin/provider secret.
+
+GATE C — EXECUTION
+An actual supported development repository is imported. A real run edits an isolated branch and yields a real diff/preview/check result. Browser disconnect does not stop or lose it. Duplicate jobs, stale workers, timeouts, cancellation, invalid tool calls, unavailable providers, and exceeded budgets are recoverable and honest. Execution never escapes the sandbox into the app server. Missing tests are not passing tests.
+
+GATE D — REVIEW AND RELEASE
+Approval binds to exact revision and evidence. Changed source/target/configuration invalidates relevant approval. Provider merge constraints guard races. Merge/release/deploy IDs are recorded. Unknown external results reconcile before retry. Deployment targets the reviewed merged code. Health failure is not success. Retry after merged-but-deploy-failed does not merge twice. Rollback is owner-authorized and selects a known prior deployment.
+
+GATE E — PILOT OPERATIONS
+Fresh setup and migrations work. App plus background worker deployment is documented. Production cannot fall back to fixture providers. Secrets are redacted and stored appropriately. Backup restore is documented and rehearsed for a pilot. Usage/concurrency limits, reservations, cleanup, webhook validation, audit trail, and provider outage behavior are verified. No unresolved blocking security or data-integrity defects.
+
+MANUAL LIVE PILOT SCRIPT
+1. Sign in as an owner and create a workspace. Invite an editor and a viewer.
+2. Connect a development GitLab account and import the supported disposable repository.
+3. Start a small visual change. Observe real activity, close the browser, and reopen it.
+4. Open the preview and inspect the changed files. Check the revision and actual checks.
+5. Request a change. Verify the new run links to the previous run without rewriting history.
+6. Attempt approve/ship as viewer and editor; verify denial on the server.
+7. Approve as owner, then push another change externally. Verify stale approval blocks ship.
+8. Refresh evidence and approval. Merge/deploy to the explicitly configured development target.
+9. Verify receipt, source revision, provider deployment status, and a meaningful health response.
+10. Exercise failed tests and failed deployment after merge. Recover without duplicate external writes.
+11. Request cancellation and exceed a small test budget; inspect the true terminal states and cleanup.
+12. Revoke repository or workspace access and verify future writes/streams are denied appropriately.
+13. Restore/rollback the development deployment through the authorized flow.
+
+EVIDENCE TO RETAIN
+Commit tested; environment; fixture versus live mode; commands/results; screenshots; redacted run/release/provider IDs; negative cases; date; limitations. Never retain credentials or private repository contents unnecessarily.
+
+FIRST RELEASE EXCLUSIONS
+Universal framework support, enterprise identity, own Git hosting, multi-agent orchestration, arbitrary production database migrations, and a payment/credit marketplace. List these openly; do not fabricate controls that imply they exist.

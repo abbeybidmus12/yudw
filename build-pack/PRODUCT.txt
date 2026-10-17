@@ -1,0 +1,41 @@
+KINDRED — PRODUCT CONTRACT
+
+PROMISE
+A builder describes what they want, watches an agent make a bounded change, previews it, understands the diff, and decides when it goes live. Start calm and conversational; reveal technical depth through user actions and project state.
+
+FIRST RELEASE
+Personal workspaces, one owner, owner-invited editors/viewers, GitLab.com repositories, and one documented JavaScript web-app starter. Use a Next.js starter with pinned dependencies, a known package manager, and documented build/start/check commands. Import compatible repositories; explain unsupported frameworks instead of claiming universal support. Starter creation provisions a real repository only in live mode after an explicit user action.
+
+One builder agent per run. One active writing run per project initially. Separate branches for runs. No enterprise hierarchy, marketplace, autonomous production changes, multi-agent coordination, general-purpose cloud IDE, custom Git storage, or homegrown CI runner in this release. Do not add these while implementing stages.
+
+PRIMARY JOURNEY
+Create or import project → describe change → plan → execute → preview → inspect → approve exact revision → merge → deploy → verify health → inspect receipt. 'Request changes' returns to the relevant conversation and starts a new run linked to the old run. Older evidence remains available.
+
+NAVIGATION
+Workspace home is global. Project navigation contains Build, Activity, Files & changes, and Review & ship. Settings contains integrations, membership, and limits. Make the active project and branch visible. Project-level routes must deep-link and survive refresh. Do not show an empty project workspace before a project has been selected or created.
+
+HOME
+Warm greeting, centered prompt composer, new/import actions, recent projects, and actionable pending reviews. A prompt entered before project creation must survive onboarding. The create flow collects a project name and a supported starter or repository. Imported repositories are selected from the connected account, not arbitrary server-fetch URLs. Include first-use, loading, empty, import failure, and expired connection states.
+
+ADAPTIVE BUILD WORKSPACE
+Before the first run, prioritize the conversation. Once a preview exists, allow conversation + preview. Opening a file adds an inspector rather than discarding the conversation. At desktop widths support resizable panels and a focus mode; persist layout preferences per user/project. At narrow widths use accessible tabs/drawers for Conversation, Preview, and Changes. Never shrink a three-column desktop page to fit a phone. Navigation, selection, scroll, and drafts must be coherent when switching views.
+
+Agent messages distinguish explanation from tool evidence. Display queued/running/cancelling/failed states and a stop control. A stopped stream must not imply the server run has stopped. Preview has booting, ready, expired, failed, refresh, and open-in-new-tab behavior. A preview signup button interacts with the preview app; it does not navigate to Kindred's release screen as in the concept export.
+
+ACTIVITY
+Timeline grouped by run with timestamps, tool actions, file changes, check results, duration, and actual recorded usage. Expand details without dumping secrets or huge output. Reconnect after refresh; expose errors and retry only where the operation is safe. Provide the exact branch and commit associated with evidence. 'No tests configured' is distinct from passing tests.
+
+FILES & CHANGES
+Repository tree, changed-file list, readable diff, unified/split view, file search, binary/large-file treatment, and an explanation of the selected change. Keep base/head revisions visible. Preserve filenames and paths. Allow review comments and request changes. The first release may keep file contents read-only; route editing intent to the agent conversation. Any generated explanation is labeled as AI commentary and cannot substitute for the actual diff.
+
+REVIEW & SHIP
+Summarize real changes, relevant checks, preview, target environment, and revision. Owner approval is required to merge/ship. Separate approval, merge, deployment, and health states. A moved branch or changed code invalidates approval. Show a deployment receipt only after provider-confirmed success. Failed deployment after a successful merge shows both facts and supports retrying deployment without merging twice. Rollback uses a known previous deployment and is a separate confirmed owner action.
+
+VISUAL SYSTEM
+Use references/*.png for visual comparison and *.json for exact source values.
+Canvas #F7F5F0; sidebar #EEECE5; surface #FFFEFA; text #292822; secondary #78766B; border #DEDCD2; accent #AE563E; accent wash #EFE0D7; success #3F6A54 on #E8EFE7.
+Treat these as starting tokens. Adjust secondary colors if contrast testing requires it. Source Serif 4 for editorial headings and wordmark; Inter for interface text; JetBrains Mono for code. Load licensed font files reliably with a suitable fallback. No Anthropic/Claude logos or proprietary font assets.
+Use a 4/8-pixel spacing rhythm, restrained 8–16px radii, thin borders, generous breathing room, and minimal shadow. Terracotta marks primary action; green communicates verified success. Use real icons from one library. Maintain readable body text around 14–16px and controls with clear focus, hover, disabled, and pending states.
+
+ACCESSIBILITY AND HONESTY
+Semantic landmarks, proper labels, keyboard navigation, restored dialog focus, readable live announcements, reduced-motion support, and usable touch targets. Status is never communicated by color alone. Every visible control has a working action or a clear unavailable reason. Demo and live state never mix. Blank pages, dead buttons, fake checks, and static activity timestamps fail acceptance.

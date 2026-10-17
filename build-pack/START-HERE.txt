@@ -1,0 +1,56 @@
+KINDRED — CURSOR BUILD PROMPT PACK
+Prepared 17 October 2026
+
+PURPOSE
+Build the real first release of the AI-first development workspace shown in the included Design Studio prototype. Kindred is a working name. The long-term direction is a GitLab alternative; the initial product is a reliable AI building and shipping experience backed by an existing Git provider.
+
+HOW TO USE
+1. Extract this whole folder. Open your intended application repository in Cursor. For a new application, start in an empty repository. For an existing application, keep its existing code and history.
+2. Copy this pack into that repository as build-pack/. Keep references/ beside the prompts. Do not put this pack inside a publicly served folder.
+3. Copy cursor-rules/kindred.mdc into the repository's .cursor/rules/kindred.mdc. If rules already exist, ask Cursor to reconcile them; do not overwrite them blindly.
+4. Open prompts/00-kickoff.txt, copy its contents into Cursor Agent, and send it. Ask Cursor to read files directly; do not paste the entire pack into one chat.
+5. Run numbered prompts 01 through 14 in order, one prompt at a time. Each prompt is an implementation task with a completion gate. Do not advance past a failing gate without recording the reason and fixing the dependency.
+6. Start a fresh Cursor chat when useful. Paste prompts/90-resume.txt to restore context. Project files and BUILD-STATUS.txt are the source of continuity.
+7. Use prompts/91-repair.txt for a failing implementation and prompts/92-visual-review.txt for design drift.
+
+WHAT YOU RECEIVE
+- PRODUCT.txt: scope, UX behavior, design tokens, and exclusions.
+- ARCHITECTURE.txt: default stack, boundaries, data, and execution model.
+- ACCEPTANCE.txt: release gates and a manual pilot script.
+- SETUP.txt: external accounts and configuration responsibilities.
+- prompts/: kickoff, 14 implementation stages, and three recovery prompts.
+- cursor-rules/kindred.mdc: persistent project instructions.
+- references/: five HTML, PNG, and editable JSON design exports.
+- ALL-PROMPTS.txt: one searchable collection of the prompts, generated for convenience.
+
+DEFAULT DECISIONS
+Next.js App Router + TypeScript + Tailwind; Supabase Auth/PostgreSQL/private object storage; Drizzle for server-side application data; Inngest for durable work; Vercel Sandbox for code execution; Vercel AI SDK with a configurable Anthropic model; GitLab.com as the first Git adapter; Vercel as the first deployment adapter.
+These are proposed implementation choices, not a claim that accounts or integrations already exist. Verify current APIs, compatible stable versions, plan limitations, quotas, and pricing before implementing. Record the chosen versions in the lockfile. Reuse equivalent working infrastructure if the target repository already has it.
+
+FIRST RUN WITHOUT CLOUD CREDENTIALS
+Stages 01–03 produce a clearly labeled, interactive local demo with deterministic fixture adapters. Real mode must never fall back to fixtures. Later stages replace those boundaries with live services. Missing credentials block dependent integration checks, not unrelated implementation. A demo-only build is not a completed live MVP.
+
+MILESTONES
+After 03: usable local product demo, not live AI.
+After 07: authenticated projects and a durable manual execution/preview path.
+After 09: real agent-generated changes with resumable activity and file inspection.
+After 11: reviewed code can merge and deploy through an owner-authorized release.
+After 14: pilot readiness is determined by evidence, not by the number of screens implemented.
+
+CURSOR WORKING HABITS
+Use a development repository and a development GitLab project. Review diffs after each stage. Let Cursor inspect the repository, implement the requested stage, and run relevant checks. Ask for a short explanation of the behavior changed and the evidence collected. Do not accept 'complete' if external behavior was only mocked. Keep actual secrets in environment configuration, never in chat, prompts, screenshots, or commits.
+
+TECHNICAL REFERENCES VERIFIED FOR THIS PACK
+Cursor project rules: https://cursor.com/docs/rules
+Next.js App Router: https://nextjs.org/docs/app
+Supabase SSR/auth: https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework&framework=nextjs
+GitLab merge requests: https://docs.gitlab.com/api/merge_requests/
+GitLab pipelines: https://docs.gitlab.com/api/pipelines/
+Inngest durable execution: https://www.inngest.com/docs/durable-execution
+Vercel Sandbox: https://vercel.com/docs/sandbox
+Vercel AI SDK: https://ai-sdk.dev/docs/introduction
+Vercel deployments: https://vercel.com/docs/rest-api/deployments/create-a-new-deployment
+These documents establish the available building blocks. This pack's architecture and sequencing are recommendations. Cursor must recheck relevant official documentation when implementing; SDKs and service capabilities change.
+
+PROTOTYPE LIMITS
+The references are visual concepts with linked screens. Their input fields, AI runs, checks, and shipping are simulated. Their absolute-positioned HTML must be rebuilt as responsive components. The ship screen's visible success receipt is an illustrative state; the actual app must show it only after verified deployment success.

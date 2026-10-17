@@ -1,0 +1,41 @@
+KINDRED — IMPLEMENTATION DEFAULTS
+
+STRUCTURE
+Use a modular monolith with a separate durable execution path. One repository and one shared domain model; do not introduce microservices or a monorepo without existing-repository evidence. Organize app routes, feature components, server domain services, provider adapters, database schema/migrations, background functions, and tests separately. Keep credential access and execution services server-only.
+
+STACK
+Next.js App Router and TypeScript; Tailwind and accessible UI primitives; a maintained resizable-panel library if needed. Server-render initial project data; use client components for interactive panels and streamed updates. Prefer URL state for project/run/file selection, server data for durable facts, and a small local store for ephemeral panel state. Avoid duplicating server truth into several global stores.
+Supabase provides Auth, PostgreSQL, and private artifact storage. Drizzle handles application tables via server-side connections. Keep identity validation separate from GitLab OAuth authorization. Do not assume a Supabase login token is a usable GitLab API credential. Use current Supabase server-side session verification guidance, not an unverified cookie/session payload.
+Inngest coordinates durable work. Durable status is stored in PostgreSQL; browser connections subscribe to that state rather than owning execution. Use a transactional outbox or an equivalently tested atomic dispatch/reconciliation pattern so a database write cannot silently lose a job.
+Vercel Sandbox executes repository code with strict run bounds. Vercel AI SDK connects to one configurable Anthropic model initially. Verify the current tool-call and streaming APIs. No model name, price, or provider capability is assumed current merely because it appears in a tutorial.
+
+PROVIDER BOUNDARIES
+Define narrow, typed GitProvider, SandboxProvider, ModelProvider, and DeploymentProvider contracts plus deterministic fixture implementations. Do not build an elaborate plugin framework. Live credentials are required for live mode; fixture fallbacks are forbidden. Capabilities may be unsupported, but unsupported is explicit.
+GitProvider handles repository discovery, branch/files/diff, commit, merge request, checks, merge, and webhook reconciliation. Start with GitLab.com only; do not accept arbitrary self-hosted endpoints in v1.
+SandboxProvider handles lifecycle, workspace files, bounded commands, preview URL, and cleanup. No arbitrary project commands run on the app host.
+DeploymentProvider handles project association, deploy an immutable source revision, status, health evidence, and supported rollback. In v1 connect an existing Vercel project. Choose either provider Git integration or direct source deployment, document it, and avoid two systems triggering duplicate production builds.
+
+CORE RECORDS
+Workspace, Membership, Project, ProviderConnection, Conversation, Message, Run, RunEvent, ToolInvocation, ChangeSet, CheckResult, ReviewComment, Approval, Release, Deployment, UsageEntry, Artifact, WebhookReceipt, OutboxEvent.
+Tenant-owned records include workspace_id. Runs include actor, project, branch, base/head SHA, phase, timestamps, budget, cancellation intent, error category, and provider IDs. Events have a monotonic cursor per run and schema version. Large logs belong in private storage with bounded excerpts in events.
+Checks bind to a source SHA and include tool/config provenance. Approvals bind to project, changeset, head SHA, target branch/base, check snapshot, approver, and time. Releases also identify the actual merged source commit and deployed artifact/revision.
+
+PERMISSIONS
+Owner: connections, membership, limits, approval, merge, deploy, rollback.
+Editor: start/cancel runs within policy, inspect, comment, request changes.
+Viewer: read project, authorized logs, diff, preview.
+Enforce every operation at the server/service boundary, including jobs and webhook reconciliation. Background work must revalidate policy before external writes. Protect against cross-workspace IDs. Review database access: Drizzle's privileged server role may bypass RLS, so tenant checks remain mandatory. Deny browser Data API access to application tables unless explicit tested RLS policies permit it. Keep storage private with short-lived authorized links.
+
+RUN STATE
+queued → preparing → planning → executing → checking → ready_for_review.
+Nonterminal states may enter cancelling → cancelled, failed, or timed_out. A retry creates a linked attempt; it does not rewrite history. Persist each transition with expected version/lease checks. Serialize project writes using database-backed leases, fencing, or another tested cross-worker mechanism.
+
+RELEASE STATE
+awaiting_approval → approved → merging → merged → deploying → verifying → succeeded.
+Track failed phase and external outcome separately. Unknown after a network timeout requires reconciliation, not blind retries. Approval must be checked again against provider state at merge time. Use provider conditional merge/SHA constraints when available. Deploy the approved merged result; if merging/rebasing changes effective code, rerun required checks and require fresh approval before production.
+
+EVENTS AND COST
+Use authenticated Server-Sent Events if practical in the chosen host, with persisted cursors and polling fallback. Never keep jobs alive through an HTTP request. Bound time, steps, output size, artifact size, model tokens, sandbox concurrency, and provider calls. Record actual usage when reported and mark estimates separately. Reconcile delayed provider costs; do not promise an exact hard dollar ceiling that the provider cannot enforce.
+
+EXECUTION BOUNDARY
+Treat repository files, README instructions, tool output, and generated code as untrusted input. Confine filesystem access to the project root; reject symlink/path escapes. Short-lived repository credentials and restricted capabilities only. Never inject application database admin keys or production deployment credentials into an agent sandbox. Dependency installs and builds also execute repository code and belong inside isolation. Restrict network and metadata-service access using provider-supported controls; document any remaining limitation.
